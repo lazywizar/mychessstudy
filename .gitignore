@@ -10,6 +10,12 @@ node_modules/
 /coverage
 /cypress/videos/
 /cypress/screenshots/
+/client/coverage/
+.nyc_output/
+*.lcov
+/client/cypress/videos/
+/client/cypress/screenshots/
+/client/**/*.snap
 
 # Production
 /build
@@ -64,3 +70,12 @@ engines/
 .eslintcache
 .env.development
 .env.production
+
+# Test generated files
+__snapshots__/
+*.snap
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+step-by-step-development-plan.md

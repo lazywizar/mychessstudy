@@ -32,6 +32,46 @@ A modern chess game analysis and study platform that brings all your chess games
 - Cypress - End-to-end testing framework
 - JWT - Authentication system
 
+## Project Structure
+```
+client/
+├── src/
+│   ├── components/
+│   │   └── ChessBoard/
+│   │       └── ChessBoard.tsx
+│   ├── hooks/
+│   │   └── useChessGame.ts
+│   ├── utils/
+│   │   └── chess.ts
+│   ├── types/
+│   │   └── chess.ts
+│   ├── services/
+│   │   └── chessService.ts
+│   ├── assets/
+│   └── tests/
+│       ├── components/
+│       │   └── ChessBoard.test.tsx
+│       ├── hooks/
+│       │   └── useChessGame.test.ts
+│       ├── utils/
+│       │   └── chess.test.ts
+│       ├── services/
+│       │   └── chessService.test.ts
+│       └── integration/
+│           └── GameFlow.test.tsx
+```
+
+The project follows a modular structure:
+- `components/`: React components with a focus on reusability
+- `hooks/`: Custom React hooks for shared stateful logic
+- `utils/`: Utility functions and helpers
+- `types/`: TypeScript type definitions and interfaces
+- `services/`: API and external service integrations
+- `assets/`: Static files like images and styles
+- `tests/`: All test files organized by their corresponding module
+  - Unit tests for components, hooks, utils, and services
+  - Integration tests for testing component interactions
+
 ## Getting Started
 
 ### Prerequisites
@@ -83,6 +123,160 @@ npm start
 - Document code with clear docstrings
 - Maintain compatibility with existing tests
 - Follow the lichess.org theme and style guidelines
+
+## Running Tests
+
+### Terminal Commands
+
+```bash
+# Run all tests
+cd client
+npm test
+
+# Run tests in watch mode (recommended during development)
+npm test -- --watch
+
+# Run tests with coverage report
+npm test -- --coverage
+
+# Run specific test file
+npm test -- ChessBoard.test.tsx
+
+# Run tests matching specific pattern
+npm test -- -t "ChessBoard"
+
+# Run tests in specific directory
+npm test -- tests/components
+```
+
+### IDE Integration
+
+#### VS Code
+1. Install the "Jest Runner" extension
+2. Click the "Run Test" or "Debug Test" CodeLens above each test
+3. Use Command Palette (Cmd + Shift + P):
+   - "Jest: Start Runner" - Start Jest in watch mode
+   - "Jest: Run All Tests" - Run all tests once
+   - "Jest: Toggle Coverage" - Toggle coverage overlay
+
+#### WebStorm/IntelliJ IDEA
+1. Right-click on the `tests` folder
+2. Select "Run 'tests'" or "Debug 'tests'"
+3. Use keyboard shortcuts:
+   - Ctrl + Shift + R (⌃⇧R) - Run tests
+   - Ctrl + Shift + D (⌃⇧D) - Debug tests
+
+### Test Scripts
+
+The following npm scripts are available:
+
+```bash
+# Run unit tests
+npm run test:unit
+
+# Run integration tests
+npm run test:integration
+
+# Run all tests with coverage
+npm run test:coverage
+
+# Run tests in watch mode
+npm run test:watch
+```
+
+Add these scripts to your package.json:
+
+```json
+{
+  "scripts": {
+    "test:unit": "react-scripts test --testPathPattern=src/tests/(?!integration)",
+    "test:integration": "react-scripts test --testPathPattern=src/tests/integration",
+    "test:coverage": "react-scripts test --coverage --watchAll=false",
+    "test:watch": "react-scripts test --watch"
+  }
+}
+```
+
+### Coverage Reports
+
+Coverage reports are generated in the `coverage` directory. Open `coverage/lcov-report/index.html` in your browser to view the detailed report.
+
+### Debugging Tests
+
+1. Add `debugger;` statement in your test or source code
+2. Run tests in debug mode:
+   ```bash
+   npm run test:debug
+   ```
+3. Open Chrome DevTools at chrome://inspect
+4. Click on the Node.js process to start debugging
+
+## End-to-End Testing with Cypress
+
+### Running Cypress Tests
+
+```bash
+# Open Cypress Test Runner (interactive mode)
+npm run cypress:open
+
+# Run Cypress tests in headless mode
+npm run cypress:run
+
+# Run Cypress tests in Chrome
+npm run cypress:run:chrome
+
+# Run Cypress component tests
+npm run cypress:run:component
+
+# Run E2E tests with app server
+npm run test:e2e
+```
+
+### Writing Cypress Tests
+
+Tests are located in `client/cypress/e2e/` directory. Example test structure:
+
+```typescript
+describe('Feature', () => {
+  beforeEach(() => {
+    cy.visit('/')  // Visit the page before each test
+  })
+
+  it('should do something', () => {
+    cy.get('[data-testid="element"]').should('exist')
+    cy.contains('Expected Text').click()
+    cy.url().should('include', '/expected-path')
+  })
+})
+```
+
+### Custom Commands
+
+Custom Cypress commands are available in `cypress/support/commands.ts`:
+
+```typescript
+// Example usage of custom command
+cy.login('user@example.com', 'password')
+```
+
+### Visual Testing
+
+Cypress automatically captures screenshots and videos of test runs in:
+- `cypress/screenshots/` - For test failure screenshots
+- `cypress/videos/` - For test run recordings
+
+### IDE Integration
+
+#### VS Code
+1. Install "Cypress Snippets" extension
+2. Use command palette to run tests:
+   - "Cypress: Open"
+   - "Cypress: Run All Tests"
+
+#### WebStorm/IntelliJ IDEA
+1. Right-click on cypress/e2e folder
+2. Select "Run 'cypress/e2e'"
+3. Use the Cypress tool window to manage tests
 
 ## Contributing
 
