@@ -1,22 +1,30 @@
 {
   "compilerOptions": {
-    "target": "es2018",
+    "target": "es2020",
     "module": "commonjs",
-    "lib": ["es2018", "esnext.asynciterable"],
-    "outDir": "./dist",
-    "rootDir": "./src",
+    "lib": ["es2020"],
+    "allowJs": true,
+    "outDir": "dist",
+    "rootDir": "src",
     "strict": true,
+    "noImplicitAny": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
     "resolveJsonModule": true,
-    "sourceMap": true,
-    "baseUrl": ".",
+    "skipLibCheck": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/tests/types"
+    ],
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "**/*.test.ts"]
+  "include": [
+    "src/**/*",
+    "src/tests/types/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

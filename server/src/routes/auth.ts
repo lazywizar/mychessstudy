@@ -2,7 +2,7 @@ import express from 'express';
 import { z } from 'zod';
 import { Types } from 'mongoose';
 import { User, IUser, IUserDocument } from '../models/User';
-import { generateToken } from '../middleware/auth';
+import { generateToken, protect } from '../middleware/auth';
 import { AppError } from '../middleware/errorHandler';
 import { logger } from '../config/logger';
 
@@ -118,7 +118,7 @@ router.post('/login', async (req, res, next) => {
 });
 
 // Get current user endpoint
-router.get('/me', async (req, res, next) => {
+router.get('/me', protect, async (req, res, next) => {
   try {
     if (!req.user || !req.user._id) {
       throw new AppError('Not authenticated', 401);
