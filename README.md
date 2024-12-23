@@ -37,8 +37,23 @@ A modern chess game analysis and study platform that brings all your chess games
 client/
 ├── src/
 │   ├── components/
-│   │   └── ChessBoard/
-│   │       └── ChessBoard.tsx
+│   │   ├── ChessBoard/
+│   │   │   └── ChessBoard.tsx
+│   │   ├── auth/
+│   │   │   ├── LoginForm.tsx
+│   │   │   ├── RegisterForm.tsx
+│   │   │   └── ProtectedRoute.tsx
+│   │   ├── common/
+│   │   │   ├── FormInput.tsx
+│   │   │   └── Button.tsx
+│   │   ├── layout/
+│   │   │   ├── Navbar.tsx
+│   │   │   └── NavbarUI.tsx
+│   │   └── profile/
+│   │       ├── EditProfile.tsx
+│   │       └── EditProfileUI.tsx
+│   ├── contexts/
+│   │   └── AuthContext.tsx
 │   ├── hooks/
 │   │   └── useChessGame.ts
 │   ├── utils/
@@ -46,31 +61,49 @@ client/
 │   ├── types/
 │   │   └── chess.ts
 │   ├── services/
+│   │   ├── api.ts
+│   │   ├── auth.ts
 │   │   └── chessService.ts
-│   ├── assets/
-│   └── tests/
-│       ├── components/
-│       │   └── ChessBoard.test.tsx
-│       ├── hooks/
-│       │   └── useChessGame.test.ts
-│       ├── utils/
-│       │   └── chess.test.ts
-│       ├── services/
-│       │   └── chessService.test.ts
-│       └── integration/
-│           └── GameFlow.test.tsx
+│   ├── tests/
+│   │   ├── mocks/
+│   │   │   ├── handlers.ts
+│   │   │   └── server.ts
+│   │   ├── unit/
+│   │   │   ├── auth/
+│   │   │   │   ├── LoginForm.test.tsx
+│   │   │   │   ├── AuthContext.test.tsx
+│   │   │   │   └── ProtectedRoute.test.tsx
+│   │   │   └── components/
+│   │   ├── integration/
+│   │   │   └── auth/
+│   │   ├── e2e/
+│   │   │   └── auth.spec.ts
+│   │   └── test-utils.tsx
+│   └── assets/
+│       └── styles/
+│           └── template.css
+server/
+├── src/
+│   ├── config/
+│   │   ├── db.ts
+│   │   └── logger.ts
+│   ├── controllers/
+│   │   └── auth.ts
+│   ├── middleware/
+│   │   ├── auth.ts
+│   │   └── errorHandler.ts
+│   ├── models/
+│   │   └── User.ts
+│   ├── routes/
+│   │   └── auth.ts
+│   └── utils/
+│       └── validation.ts
+├── tests/
+│   ├── unit/
+│   │   └── auth.test.ts
+│   └── integration/
+│       └── auth.test.ts
 ```
-
-The project follows a modular structure:
-- `components/`: React components with a focus on reusability
-- `hooks/`: Custom React hooks for shared stateful logic
-- `utils/`: Utility functions and helpers
-- `types/`: TypeScript type definitions and interfaces
-- `services/`: API and external service integrations
-- `assets/`: Static files like images and styles
-- `tests/`: All test files organized by their corresponding module
-  - Unit tests for components, hooks, utils, and services
-  - Integration tests for testing component interactions
 
 ## Getting Started
 
