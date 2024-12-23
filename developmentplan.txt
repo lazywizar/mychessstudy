@@ -48,35 +48,3 @@ Features to Build
 6. Cloud Storage for Games:
 	•	Store PGNs, game metadata, and user analysis in a database.
 
-Architecture Diagram
-Frontend (React) → Backend API (Node.js) → Database (MongoDB)
-      ↓                  ↓                      ↓
-Chessground        Auth Middleware          Game Storage
-Chess.js           Database Middleware   User Profiles
-React UI                                    PGN Data
-Stockfish Engine(Client)
-
-Step-by-Step Development Plan
-
-1. Set Up the Frontend:
-	•	Create a React app (or Next.js project).
-	•	Install Chessground and Chess.js.
-	•	Build a simple chessboard that renders a FEN position and allows user interactions.
-	•	Add a sidebar component for move history and annotations.
-
-2. Set Up the Backend:
-	•	Create a Node.js server with Express.
-	•	Add routes for user authentication, uploading games, and fetching analysis.
-	•	Integrate Stockfish for server-side evaluations.
-
-3. Connect Frontend to Backend:
-	•	Use REST APIs or GraphQL to fetch user data and store PGN files.
-	•	Sync the chessboard with the backend for real-time updates.
-
-4. Add Engine Analysis:
-	•	Integrate Stockfish.js in the client for basic evaluations.
-	•	Add a server-based Stockfish instance for deeper analysis.
-
-5. Deploy the Application:
-	•	Use Vercel or Netlify for frontend deployment.
-	•	Host your backend on AWS/GCP or Heroku.
