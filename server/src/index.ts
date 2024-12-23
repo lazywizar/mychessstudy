@@ -4,6 +4,7 @@ import cors from 'cors';
 import { connectDB } from './config/database';
 import { errorHandler } from './middleware/errorHandler';
 import { logger } from './config/logger';
+import authRoutes from './routes/auth';
 
 const app = express();
 
@@ -17,7 +18,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes will be added here
+// Routes
+app.use('/api/auth', authRoutes);
+
+// Health check
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
