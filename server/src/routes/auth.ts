@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
 import { Types } from 'mongoose';
 import { User, IUser, IUserDocument } from '../models/User';
@@ -18,6 +18,10 @@ const registerSchema = z.object({
 const loginSchema = z.object({
   email: z.string().email('Invalid email format'),
   password: z.string()
+});
+
+const updateProfileSchema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters')
 });
 
 // Type for user response without password
@@ -157,6 +161,51 @@ router.get('/me', protect, async (req, res, next) => {
   } catch (error) {
     logger.error('Error retrieving user', { error });
     next(error);
+  }
+});
+
+// Update profile endpoint
+router.patch('/profile', protect, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    // Since this route uses the protect middleware, we can be sure req.user exists
+    // But we need to satisfy TypeScript
+    if (!req.user) {
+      throw new AppError('Not authenticated', 401);
+    }
+
+    logger.info('Profile update attempt', { userId: req.user._id });
+
+    // Validate request body
+    const validatedData = updateProfileSchema.parse(req.body);
+    logger.debug('Profile update validation passed', { userId: req.user._id });
+
+    // Update user
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { name: validatedData.name },
+      { new: true, runValidators: true }
+    );
+
+    if (!user) {
+      logger.warn('Profile update failed - User not found', { userId: req.user._id });
+      throw new AppError('User not found', 404);
+    }
+
+    // Create safe user response
+    const userResponse = createUserResponse(user);
+
+    logger.info('Profile updated successfully', { userId: user._id });
+    res.json({
+      status: 'success',
+      data: { user: userResponse }
+    });
+  } catch (error) {
+    logger.error('Profile update error', { error });
+    if (error instanceof z.ZodError) {
+      next(new AppError(error.errors[0].message, 400));
+    } else {
+      next(error);
+    }
   }
 });
 

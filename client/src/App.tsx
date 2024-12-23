@@ -4,6 +4,8 @@ import { AuthProvider, useAuth } from 'contexts/AuthContext';
 import { ProtectedRoute } from 'components/ProtectedRoute';
 import { LoginForm } from 'components/LoginForm';
 import { RegisterForm } from 'components/RegisterForm';
+import { Navbar } from 'components/Navbar';
+import { EditProfile } from 'components/EditProfile';
 import './App.css';
 
 // Root route component that redirects based on auth status
@@ -13,48 +15,56 @@ const RootRoute = () => {
 };
 
 function App() {
+  const { user } = useAuth();
+
   return (
-    <AuthProvider>
-      <Router>
-        <div className="App">
-          <Routes>
-            {/* Public routes */}
-            <Route 
-              path="/login" 
-              element={
-                <PublicRoute>
-                  <LoginForm />
-                </PublicRoute>
-              } 
-            />
-            <Route 
-              path="/register" 
-              element={
-                <PublicRoute>
-                  <RegisterForm />
-                </PublicRoute>
-              } 
-            />
-            
-            {/* Protected routes */}
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <div>Dashboard (Coming Soon)</div>
-                </ProtectedRoute>
-              }
-            />
-            
-            {/* Root route - redirects based on auth status */}
-            <Route path="/" element={<RootRoute />} />
-            
-            {/* Catch all route */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </div>
-      </Router>
-    </AuthProvider>
+    <div className="App min-h-screen bg-gray-100">
+      {user && <Navbar />}
+      <Routes>
+        {/* Public routes */}
+        <Route 
+          path="/login" 
+          element={
+            <PublicRoute>
+              <LoginForm />
+            </PublicRoute>
+          } 
+        />
+        <Route 
+          path="/register" 
+          element={
+            <PublicRoute>
+              <RegisterForm />
+            </PublicRoute>
+          } 
+        />
+        
+        {/* Protected routes */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <div className="p-4">Dashboard (Coming Soon)</div>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile/edit"
+          element={
+            <ProtectedRoute>
+              <EditProfile />
+            </ProtectedRoute>
+          }
+        />
+        
+        {/* Root route - redirects based on auth status */}
+        <Route path="/" element={<RootRoute />} />
+        
+        {/* Catch all route */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </div>
   );
 }
 
@@ -64,4 +74,14 @@ const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return user ? <Navigate to="/dashboard" replace /> : <>{children}</>;
 };
 
-export default App;
+const AppWrapper = () => {
+  return (
+    <AuthProvider>
+      <Router>
+        <App />
+      </Router>
+    </AuthProvider>
+  );
+};
+
+export default AppWrapper;
