@@ -21,4 +21,20 @@ describe('TypeScript Configuration', () => {
     // Verify that we can import TypeScript files
     expect(() => require('../App')).not.toThrow();
   });
+
+  it('should have TypeScript configuration', () => {
+    const fs = require('fs');
+    const tsConfigExists = fs.existsSync('tsconfig.json');
+    expect(tsConfigExists).toBe(true);
+  });
+
+  it('should have proper TypeScript types', () => {
+    const fs = require('fs');
+    const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+    expect(packageJson.dependencies['typescript']).toBeDefined();
+    expect(packageJson.dependencies['@types/react']).toBeDefined();
+    expect(packageJson.dependencies['@types/react-dom']).toBeDefined();
+  });
 });
+
+export {};

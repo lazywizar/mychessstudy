@@ -2,11 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import Lichess Noto Sans font */
+@import url('https://lichess1.org/assets/_Jy6Ww/font/noto-sans.css');
+
+/* Apply Lichess font family */
+@layer base {
+  html {
+    font-family: 'Noto Sans', system-ui, sans-serif;
+  }
+}
+
+/* Lichess-like colors */
+:root {
+  --primary: #629924;
+  --primary-hover: #76b729;
+  --background: #161512;
+  --surface: #262421;
+  --text: #bababa;
+  --text-light: #808080;
+  --border: #404040;
+  --error: #c33;
+  --success: #759900;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

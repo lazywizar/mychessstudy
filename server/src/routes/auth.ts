@@ -43,12 +43,16 @@ const createUserResponse = (user: IUserDocument & { _id: Types.ObjectId }): User
 // Register endpoint
 router.post('/register', async (req, res, next) => {
   try {
+    logger.info('Register attempt', { email: req.body.email });
+    
     // Validate request body
     const validatedData = registerSchema.parse(req.body);
+    logger.debug('Validation passed', { email: validatedData.email });
 
     // Check if user already exists
     const existingUser = await User.findOne({ email: validatedData.email });
     if (existingUser) {
+      logger.warn('Registration failed - User exists', { email: validatedData.email });
       throw new AppError('User already exists with this email', 400);
     }
 
@@ -58,19 +62,23 @@ router.post('/register', async (req, res, next) => {
       password: validatedData.password,
       name: validatedData.name
     });
+    logger.info('User created successfully', { userId: user._id });
 
     // Generate token
     const token = generateToken(user._id.toString());
+    logger.debug('Token generated for user', { userId: user._id });
 
     // Create safe user response
     const userResponse = createUserResponse(user);
 
+    logger.info('Registration successful', { userId: user._id });
     res.status(201).json({
       status: 'success',
       token,
       data: { user: userResponse }
     });
   } catch (error) {
+    logger.error('Registration error', { error });
     if (error instanceof z.ZodError) {
       next(new AppError(error.errors[0].message, 400));
     } else {
@@ -82,33 +90,43 @@ router.post('/register', async (req, res, next) => {
 // Login endpoint
 router.post('/login', async (req, res, next) => {
   try {
+    logger.info('Login attempt', { email: req.body.email });
+    
     // Validate request body
     const validatedData = loginSchema.parse(req.body);
+    logger.debug('Login validation passed', { email: validatedData.email });
 
     // Find user and include password field
     const user = await User.findOne({ email: validatedData.email }).select('+password');
     if (!user) {
+      logger.warn('Login failed - User not found', { email: validatedData.email });
       throw new AppError('Invalid email or password', 401);
     }
+    logger.debug('User found', { userId: user._id });
 
     // Check password
     const isPasswordValid = await user.comparePassword(validatedData.password);
     if (!isPasswordValid) {
+      logger.warn('Login failed - Invalid password', { email: validatedData.email });
       throw new AppError('Invalid email or password', 401);
     }
+    logger.debug('Password validated successfully');
 
     // Generate token
     const token = generateToken(user._id.toString());
+    logger.debug('Token generated for user', { userId: user._id });
 
     // Create safe user response
     const userResponse = createUserResponse(user);
 
-    res.status(200).json({
+    logger.info('Login successful', { userId: user._id });
+    res.json({
       status: 'success',
       token,
       data: { user: userResponse }
     });
   } catch (error) {
+    logger.error('Login error', { error });
     if (error instanceof z.ZodError) {
       next(new AppError(error.errors[0].message, 400));
     } else {
@@ -131,11 +149,13 @@ router.get('/me', protect, async (req, res, next) => {
 
     const userResponse = createUserResponse(user);
 
+    logger.info('User retrieved successfully', { userId: user._id });
     res.status(200).json({
       status: 'success',
       data: { user: userResponse }
     });
   } catch (error) {
+    logger.error('Error retrieving user', { error });
     next(error);
   }
 });

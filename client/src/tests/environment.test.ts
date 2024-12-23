@@ -12,3 +12,5 @@ describe('Environment Configuration', () => {
     expect(tailwindConfigExists).toBe(true);
   });
 });
+
+export {};
