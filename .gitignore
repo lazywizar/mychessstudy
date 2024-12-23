@@ -1,0 +1,66 @@
+# windsurf rules
+.windsurfrules
+
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# Testing
+/coverage
+/cypress/videos/
+/cypress/screenshots/
+
+# Production
+/build
+/dist
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# MongoDB
+*.mongodb
+mongodb.log
+mongod.lock
+
+# Misc
+.cache/
+.temp/
+*.pem
+.env.*
+!.env.example
+
+# Debug
+.debug/
+debug.log
+
+# Stockfish engine files
+stockfish*
+engines/
+
+# React
+.eslintcache
+.env.development
+.env.production

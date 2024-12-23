@@ -1,0 +1,82 @@
+To build something like Lichess Study, where users can log in, upload games, and analyze them on an interactive board, I recommend a modern tech stack that balances scalability, interactivity, and simplicity. Below is a breakdown of the technologies and a suggested architecture:
+
+Recommended Tech Stack
+Development Tools
+	•	Frontend: React, Chessground, Chess.js.
+	•	Backend: Node.js, Express, Stockfish.js for client-side analysis.
+	•	UI Framework: Tailwind CSS
+	•	Authentication: JWT
+	•	Database: MongoDB.
+	•	Testing: Jest (unit testing), Cypress (end-to-end testing).
+
+Features to Build
+1. User Authentication:
+	•	Allow users to create accounts, log in, and save their games and analysis.
+	•	Backend service with JWT tokens.
+
+2. Game Upload:
+	•	Let users upload PGN files.
+	•	Parse the uploaded PGN using Chess.js and store it in the database.
+  •	Allow multiple games in a single file.
+  •	Provide a user-friendly interface for uploading and organizing games.
+  •	Retain annotations, symbols and comments associated with each game.
+  •	Show all games in a table view.
+  •	Allow users to download and delete their uploaded games.
+  •	Implement pagination for the game list.
+
+3. Interactive Chessboard:
+	•	Clicking a row in the game list should load the game on the chessboard.
+  • Use Chessground for the chessboard.
+	•	Synchronize the board with the game state managed by Chess.js.
+  •	Allow users to make moves on the chessboard.
+  •	Allow user to draw symbols on the board to annotate the game.
+  •	Allow user to add comments to the game.
+  •	Allow user to save the game as a PGN file.
+
+4. Sidebar for Move History:
+	•	Highlight the current move and allow users to navigate through the game.
+	•	Create a structured layout to display the mainline moves and nested variations.
+	•	Implement interactive elements such as clickable moves, navigation buttons, and annotation displays.
+	•	Ensure that selecting a move in the sidebar updates the chessboard to the corresponding position.
+	•	Conversely, making a move on the chessboard should highlight the appropriate move in the sidebar.
+	•	Display comments and annotations associated with specific moves.
+	•	Allow users to explore different variations by expanding and collapsing nested move sequences.
+
+5. Engine Analysis:
+	•	Use Stockfish.js for client-side analysis (if lightweight analysis is enough).
+
+6. Cloud Storage for Games:
+	•	Store PGNs, game metadata, and user analysis in a database.
+
+Architecture Diagram
+Frontend (React) → Backend API (Node.js) → Database (MongoDB)
+      ↓                  ↓                      ↓
+Chessground        Auth Middleware          Game Storage
+Chess.js           Database Middleware   User Profiles
+React UI                                    PGN Data
+Stockfish Engine(Client)
+
+Step-by-Step Development Plan
+
+1. Set Up the Frontend:
+	•	Create a React app (or Next.js project).
+	•	Install Chessground and Chess.js.
+	•	Build a simple chessboard that renders a FEN position and allows user interactions.
+	•	Add a sidebar component for move history and annotations.
+
+2. Set Up the Backend:
+	•	Create a Node.js server with Express.
+	•	Add routes for user authentication, uploading games, and fetching analysis.
+	•	Integrate Stockfish for server-side evaluations.
+
+3. Connect Frontend to Backend:
+	•	Use REST APIs or GraphQL to fetch user data and store PGN files.
+	•	Sync the chessboard with the backend for real-time updates.
+
+4. Add Engine Analysis:
+	•	Integrate Stockfish.js in the client for basic evaluations.
+	•	Add a server-based Stockfish instance for deeper analysis.
+
+5. Deploy the Application:
+	•	Use Vercel or Netlify for frontend deployment.
+	•	Host your backend on AWS/GCP or Heroku.
